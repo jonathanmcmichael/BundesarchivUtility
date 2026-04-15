@@ -16,30 +16,120 @@
             --accent-hover: #4f46e5;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
+            --sidebar-width: 380px;
         }
 
         body {
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, var(--bg-grad-1), var(--bg-grad-2));
+            background: linear-gradient(135deg, var(--bg-grad-1), var(--bg-grad-2)) fixed;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(15, 23, 42, 0.8);
+            border-right: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin: 0 0 1rem;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .hierarchy-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .hierarchy-list li {
+            position: relative;
+            margin: 0.5rem 0;
+        }
+        
+        .hierarchy-details {
+            background: transparent;
+        }
+        
+        .hierarchy-summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            transition: background 0.2s;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+        
+        .hierarchy-summary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .hierarchy-summary::before {
+            content: '+';
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            line-height: 14px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .hierarchy-details[open] > .hierarchy-summary::before {
+            content: '-';
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 2rem;
         }
 
         header {
-            margin-top: 3rem;
             text-align: center;
             animation: fadeInDown 0.8s ease-out;
+            margin-bottom: 2rem;
         }
 
         h1 {
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
             background: linear-gradient(to right, #818cf8, #c084fc);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -48,21 +138,19 @@
             color: var(--text-muted);
             font-size: 1.1rem;
             max-width: 600px;
-            margin: 0 auto 2rem;
+            margin: 0 auto;
         }
 
         .container {
-            width: 90%;
-            max-width: 1000px;
+            width: 100%;
+            max-width: 800px;
             background: var(--glass-bg);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
             border-radius: 16px;
             padding: 2rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             animation: fadeInUp 0.8s ease-out;
-            margin-bottom: 3rem;
         }
 
         .search-area {
@@ -161,79 +249,6 @@
             color: #818cf8;
         }
 
-        /* Dashboard */
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px solid var(--glass-border);
-            border-radius: 10px;
-            padding: 1.25rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .stat-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-muted);
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-main);
-            line-height: 1;
-        }
-
-        .stat-sub {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        /* Progress bar */
-        .progress-wrap {
-            margin-top: 0.6rem;
-        }
-
-        .progress-track {
-            background: rgba(255,255,255,0.08);
-            border-radius: 99px;
-            height: 8px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            border-radius: 99px;
-            background: linear-gradient(to right, #6366f1, #c084fc);
-            transition: width 0.8s ease;
-            width: 0%;
-        }
-
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 0.35rem;
-        }
-
-        .stats-loading {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            text-align: center;
-            padding: 1rem 0;
-        }
-
-        /* Loading UI */
         .loader {
             display: none;
             border: 3px solid rgba(255, 255, 255, 0.1);
@@ -258,83 +273,55 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
     </style>
 </head>
 <body>
-    <header>
-        <h1>Bundesarchiv Archives</h1>
-        <p class="subtitle">Query, view, and export archival entries from the Invenio API with zero friction.</p>
-    </header>
+    
+    <aside class="sidebar">
+        <h2>Tectonics</h2>
+        <ul class="hierarchy-list">
+            <li>
+                <details class="hierarchy-details" open>
+                    <summary class="hierarchy-summary">Inventories</summary>
+                    <ul class="hierarchy-list" style="padding-left: 1rem; margin-top: 0.5rem;">
+                        <li><details class="hierarchy-details"><summary class="hierarchy-summary">Holy Roman Empire and German Confederation including Provisional Central Authority (1495-1866)</summary></details></li>
+                        <li><details class="hierarchy-details"><summary class="hierarchy-summary">North German Confederation and German Empire (1867/1871-1945)</summary></details></li>
+                        <li><details class="hierarchy-details"><summary class="hierarchy-summary">Federal Republic of Germany with Western Allied occupation zones (1945 ff)</summary></details></li>
+                        <li><details class="hierarchy-details"><summary class="hierarchy-summary">German Democratic Republic with Soviet occupation zone (1945-1990)</summary></details></li>
+                        <li><details class="hierarchy-details"><summary class="hierarchy-summary">Estates and collections</summary></details></li>
+                        <li><details class="hierarchy-details"><summary class="hierarchy-summary">Film and accompanying film material</summary></details></li>
+                    </ul>
+                </details>
+            </li>
+        </ul>
+    </aside>
 
-    <div class="container">
-        <!-- Dashboard -->
-        <div id="dashboard">
-            <p class="stats-loading">Loading archive statistics…</p>
-        </div>
+    <div class="main-content">
+        <header>
+            <h1>Bundesarchiv Query</h1>
+            <p class="subtitle">Query, view, and export archival entries from the Invenio API with zero friction.</p>
+        </header>
 
-        <div class="search-area">
-            <input type="text" id="searchInput" placeholder="Enter keywords or API endpoint..." />
-            <button class="btn-primary" onclick="fetchData()">
-                <span class="loader" id="loader"></span>
-                <span id="btnText">Query</span>
-            </button>
-            <button class="btn-secondary" onclick="exportCSV()">Export CSV</button>
-        </div>
+        <div class="container">
+            <div class="search-area">
+                <input type="text" id="searchInput" placeholder="Enter keywords or select from tectonics..." />
+                <button class="btn-primary" onclick="fetchData()">
+                    <span class="loader" id="loader"></span>
+                    <span id="btnText">Query</span>
+                </button>
+                <button class="btn-secondary" onclick="exportCSV()">Export CSV</button>
+            </div>
 
-        <div class="results" id="resultsArea">
-            <!-- Items injected by JS -->
-            <p style="text-align: center; color: var(--text-muted); padding: 2rem;">No entries fetched yet. Hit Query to view!</p>
+            <div class="results" id="resultsArea">
+                <!-- Items injected by JS -->
+                <p style="text-align: center; color: var(--text-muted); padding: 2rem;">No entries fetched yet. Hit Query to view!</p>
+            </div>
         </div>
     </div>
 
     <script>
         let currentData = [];
-
-        function fmt(n) {
-            return n.toLocaleString('de-DE');
-        }
-
-        async function loadStats() {
-            const dashboard = document.getElementById('dashboard');
-            try {
-                const res = await fetch('/api/stats');
-                const s = await res.json();
-                const pct = s.percent_digitized.toFixed(1);
-                dashboard.innerHTML = `
-                    <div class="dashboard">
-                        <div class="stat-card">
-                            <span class="stat-label">Total Records</span>
-                            <span class="stat-value">${fmt(s.total)}</span>
-                            <span class="stat-sub">in the archive</span>
-                        </div>
-                        <div class="stat-card">
-                            <span class="stat-label">Digitized</span>
-                            <span class="stat-value">${fmt(s.digitized)}</span>
-                            <span class="stat-sub">records with files</span>
-                        </div>
-                        <div class="stat-card" style="grid-column: span 2; min-width: 0;">
-                            <span class="stat-label">Digitization Progress</span>
-                            <span class="stat-value">${pct}%</span>
-                            <div class="progress-wrap">
-                                <div class="progress-track">
-                                    <div class="progress-fill" id="progressFill"></div>
-                                </div>
-                                <div class="progress-label">
-                                    <span>${fmt(s.digitized)} digitized</span>
-                                    <span>${fmt(s.total - s.digitized)} not yet digitized</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
-                // Animate the bar after a brief paint delay
-                requestAnimationFrame(() => {
-                    const fill = document.getElementById('progressFill');
-                    if (fill) fill.style.width = pct + '%';
-                });
-            } catch (err) {
-                dashboard.innerHTML = '<p class="stats-loading" style="color:#f87171;">Could not load statistics.</p>';
-            }
-        }
 
         async function fetchData() {
             const loader = document.getElementById('loader');
@@ -389,9 +376,17 @@
             if (searchInput) urlParams.append('q', searchInput);
             window.location.href = '/api/export?' + urlParams.toString();
         }
-
-        // Load dashboard stats immediately on page load
-        loadStats();
+        
+        // Add click handlers to hierarchy items to perform searches
+        document.querySelectorAll('.hierarchy-summary').forEach(item => {
+            if(item.textContent !== "Inventories") {
+                item.addEventListener('click', (e) => {
+                    document.getElementById('searchInput').value = item.textContent;
+                    // Automatically trigger the query when clicking on a category
+                    fetchData();
+                });
+            }
+        });
     </script>
 </body>
 </html>
